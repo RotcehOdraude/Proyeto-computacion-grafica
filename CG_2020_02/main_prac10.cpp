@@ -59,23 +59,25 @@ float	movX = 0.0f,
 //Texture
 unsigned int	t_smile;
 
-//Keyframes
-float	posX = 0.0f, 
-		posY = 0.0f, 
-		posZ = 0.0f, 
-		rotRodIzq = 0.0f,
-		giroMonito = 0.0f,
-		movBrazoIzq = 0.0f,
-		movBrazoDer = 0.0f,
-		rotRodDer = 0.0f;
+//Keyframes ?---------------------------- HOMERO
+float	posXhomero = 0.0f,
+posYhomero = 0.0f,
+posZhomero = 0.0f,
+giroHomero = 0.0f, // Este es el torso de Homero
+rotPiernaDerHomero = 0.0f,
+rotPiernaIzqHomero = 0.0f,
+movBrazoDerHomero = 0.0f,
+movBrazoIzqHomero = 0.0f;
 	
-
+// $$$$$$$$ Variables de incremento o diferencia (Delta) que sirve para la interpolacion : (pos siguiente - pos actual) / numero de cuadros
 float	incX = 0.0f,
-		incY = 0.0f,
-		incZ = 0.0f,
-		rotInc = 0.0f,
-		giroMonitoInc = 0.0f,
-		movBrazoInc = 0.0f;
+incY = 0.0f,
+incZ = 0.0f,
+giroMonitoInc = 0.0f,
+rotIncDer = 0.0f,
+rotIncIzq = 0.0f,
+movBrazoIncDer = 0.0f,
+movBrazoIncIzq = 0.0f;
 
 #define MAX_FRAMES 9    //$$$$$$$$$$$$$$$$$$$$$$$$$$ Es la condicion maxima del ciclo for de los frames
 int i_max_steps = 190;
@@ -98,55 +100,54 @@ int FrameIndex = 0;			//introducir datos
 bool play = false;
 int playIndex = 0;
 
-void saveFrame(void)
+void saveFrame(void) //$$$$$$$$$$$$$$$$$$$$$$ Almacena en el arreglo de frames la posicion de todas las variables de todas las partes que se mueven de los modelos 
 {
 
-	printf("frameindex %d\n", FrameIndex);
+	printf("---- frameindex %d ----\n", FrameIndex);
 
-	KeyFrame[FrameIndex].posX = posX;
-	KeyFrame[FrameIndex].posY = posY;
-	KeyFrame[FrameIndex].posZ = posZ;
+	KeyFrame[FrameIndex].posX = posXhomero;				printf("KeyFrame[%i].posX = %f\n",FrameIndex, posXhomero);
+	KeyFrame[FrameIndex].posY = posYhomero;				printf("KeyFrame[%i].posY = %f\n", FrameIndex, posYhomero);
+	KeyFrame[FrameIndex].posZ = posZhomero;				printf("KeyFrame[%i].posZ = %f\n", FrameIndex, posZhomero);
 
-	KeyFrame[FrameIndex].rotRodIzq = rotRodIzq;
-	KeyFrame[FrameIndex].giroMonito = giroMonito;
-
-	KeyFrame[FrameIndex].movBrazoDer = movBrazoIzq;
-	KeyFrame[FrameIndex].movBrazoIzq = movBrazoIzq;
-	
-	KeyFrame[FrameIndex].rotRodDer= rotRodDer;
-
+	KeyFrame[FrameIndex].giroMonito = giroHomero;			printf("KeyFrame[%i].giroMonito = %f\n", FrameIndex, giroHomero);
+	KeyFrame[FrameIndex].rotRodDer = rotPiernaDerHomero;			printf("KeyFrame[%i].rotRodDer = %f\n", FrameIndex, rotPiernaDerHomero);
+	KeyFrame[FrameIndex].rotRodIzq = rotPiernaIzqHomero;			printf("KeyFrame[%i].rotRodIzq = %f\n", FrameIndex, rotPiernaIzqHomero);
+	KeyFrame[FrameIndex].movBrazoDer = movBrazoDerHomero;			printf("KeyFrame[%i].movBrazoDer = %f\n", FrameIndex, movBrazoDerHomero);
+	KeyFrame[FrameIndex].movBrazoIzq = movBrazoIzqHomero;			printf("KeyFrame[%i].movBrazoIzq = %f\n", FrameIndex, movBrazoIzqHomero);
 
 	FrameIndex++;
 }
 
-void resetElements(void)
+void resetElements(void) //$$$$$$$$$$ Este metodo se manda a llamar justo en el instante que se decide reproducir el animacion, establece los valores de los modelos a los valore del primer frame
 {
-	posX = KeyFrame[0].posX;
-	posY = KeyFrame[0].posY;
-	posZ = KeyFrame[0].posZ;
+	posXhomero = KeyFrame[0].posX;
+	posYhomero = KeyFrame[0].posY;
+	posZhomero = KeyFrame[0].posZ;
 
-	rotRodIzq = KeyFrame[0].rotRodIzq;
-	giroMonito = KeyFrame[0].giroMonito;
+	giroHomero = KeyFrame[0].giroMonito;
 
-	movBrazoIzq = KeyFrame[0].movBrazoDer;
-	movBrazoDer = KeyFrame[0].movBrazoIzq;
-	rotRodDer = KeyFrame[0].rotRodDer;
+	rotPiernaDerHomero = KeyFrame[0].rotRodDer;
+	rotPiernaIzqHomero = KeyFrame[0].rotRodIzq;
+
+	movBrazoDerHomero = KeyFrame[0].movBrazoDer;
+	movBrazoIzqHomero = KeyFrame[0].movBrazoIzq;
 }
 
 void interpolation(void)
-{
+{   //$$$$$$$ Las variables de incremeto calculan el cambio que hubo en todas las variables para despues hacer la interpolacion
 
 	incX = (KeyFrame[playIndex + 1].posX - KeyFrame[playIndex].posX) / i_max_steps;
 	incY = (KeyFrame[playIndex + 1].posY - KeyFrame[playIndex].posY) / i_max_steps;
 	incZ = (KeyFrame[playIndex + 1].posZ - KeyFrame[playIndex].posZ) / i_max_steps;
 
-	rotInc = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
 	giroMonitoInc = (KeyFrame[playIndex + 1].giroMonito - KeyFrame[playIndex].giroMonito) / i_max_steps;
+	
+	rotIncDer = (KeyFrame[playIndex + 1].rotRodDer - KeyFrame[playIndex].rotRodDer) / i_max_steps;
+	rotIncIzq = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
 
-	movBrazoInc = (KeyFrame[playIndex + 1].movBrazoDer - KeyFrame[playIndex].movBrazoDer) / i_max_steps;
-	movBrazoInc = (KeyFrame[playIndex + 1].movBrazoIzq - KeyFrame[playIndex].movBrazoIzq) / i_max_steps;
+	movBrazoIncDer = (KeyFrame[playIndex + 1].movBrazoDer - KeyFrame[playIndex].movBrazoDer) / i_max_steps;
+	movBrazoIncIzq = (KeyFrame[playIndex + 1].movBrazoIzq - KeyFrame[playIndex].movBrazoIzq) / i_max_steps;
 
-	rotInc = (KeyFrame[playIndex + 1].rotRodDer - KeyFrame[playIndex].rotRodDer) / i_max_steps;
 }
 
 
@@ -341,7 +342,7 @@ void animate(void)
 				playIndex = 0;
 				play = false;
 			}
-			else //Next frame interpolations
+			else //Next frame interpolations   //$$$$$$$$$$$ Esta condicion calcula la interpolacion de cada frame en el arreglo 
 			{
 				i_curr_steps = 0; //Reset counter
 								  //Interpolation
@@ -350,17 +351,17 @@ void animate(void)
 		}
 		else
 		{
-			//Draw animation
-			posX += incX;
-			posY += incY;
-			posZ += incZ;
+			//Draw animation   //$$$$$$$$$$$ Los incrementos tienen el calculo de la interpolacion...
+			posXhomero += incX; 
+			posYhomero += incY;
+			posZhomero += incZ;
 
-			rotRodIzq += rotInc;
-			giroMonito += giroMonitoInc;
+			giroHomero += giroMonitoInc;
+			rotPiernaDerHomero += rotIncDer;
+			rotPiernaIzqHomero += rotIncIzq;
+			movBrazoDerHomero += movBrazoIncDer;
+			movBrazoIzqHomero += movBrazoIncIzq;
 
-			movBrazoIzq += movBrazoInc;
-			movBrazoIzq += movBrazoInc;
-			rotRodDer += rotInc;
 			i_curr_steps++;
 		}
 
@@ -369,8 +370,8 @@ void animate(void)
 }
 
 void display(	Shader shader, Shader skyboxShader, GLuint skybox, 
-				Model botaDer, Model piernaDer, Model piernaIzq, Model torso,
-				Model brazoDer, Model brazoIzq, Model cabeza, Model escenario)
+				Model torso, Model piernaDer, Model piernaIzq,
+				Model brazoDer, Model brazoIzq, Model cabeza, Model escenario) //$$$$$ Funcion display preconfigurada
 {
 	shader.use();
 
@@ -421,55 +422,55 @@ void display(	Shader shader, Shader skyboxShader, GLuint skybox,
 	shader.setMat4("model", model);
 	escenario.Draw(shader);
 
-	//Personaje
+	//Homero torso
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(posX, posY, posZ));//$$$$$$$$$$$$$$$$$$$$$$$$$$ posicion del modelo
-	tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial de homero
+	model = glm::translate(model, glm::vec3(posXhomero, posYhomero, posZhomero));//$$$$$$$$$$$$$$$$$$$$$$$$$$ posicion del modelo en funcion del teclado
+	tmp = model = glm::rotate(model, glm::radians(giroHomero), glm::vec3(0.0f, 1.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo en funcion del teclado
 	shader.setMat4("model", model);
 	torso.Draw(shader);
 
-	//Pierna Der
-	model = glm::translate(tmp, glm::vec3(-0.5f, 0.0f, -0.1f));
-	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-	model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro de rotRodIzq
+	//Pierna Der Homero 
+	model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+	//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+	model = glm::rotate(model, glm::radians(rotPiernaDerHomero), glm::vec3(-1.0f, 0.0f, 0.0f)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro de rotRodIzq
 	shader.setMat4("model", model);
 	piernaDer.Draw(shader);
 
-	//Pie Der
+	/*Pie derecho antiguo
 	model = glm::translate(model, glm::vec3(0, -0.9f, -0.2f));
 	shader.setMat4("model", model);
-	botaDer.Draw(shader);
+	botaDer.Draw(shader);*/
 
-	//Pierna Izq
-	model = glm::translate(tmp, glm::vec3(0.5f, 0.0f, -0.1f));
-	model = glm::rotate(model, glm::radians(-rotRodDer), glm::vec3(0.0f, 1.0f, 0.0f));
+	//Pierna Izq Homero
+	model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, -0.0f));
+	model = glm::rotate(model, glm::radians(rotPiernaIzqHomero), glm::vec3(-1.0f, 0.0f, 0.0f));
 	shader.setMat4("model", model);
 	piernaIzq.Draw(shader);
 
-	//Pie Iz
+	/*Pie Izq antiguo
 	model = glm::translate(model, glm::vec3(0, -0.9f, -0.2f));
 	shader.setMat4("model", model);
-	botaDer.Draw(shader);	//Izq trase
+	botaDer.Draw(shader);	*/
 
-	//Brazo derecho
-	model = glm::translate(tmp, glm::vec3(0.0f, - 1.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(-0.75f, 2.5f, 0));
-	model = glm::rotate(model, glm::radians(movBrazoDer), glm::vec3(1.0f, 0.0f, 0.0f));
+	//Brazo derecho Homero
+	model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+	//model = glm::translate(model, glm::vec3(-0.75f, 2.5f, 0));
+	model = glm::rotate(model, glm::radians(movBrazoDerHomero), glm::vec3(-1.0f, 0.0f, 0.0f));
 	shader.setMat4("model", model);
 	brazoDer.Draw(shader);
 
-	//Brazo izquierdo
-	model = glm::translate(tmp, glm::vec3(0.0f, - 1.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-	model = glm::rotate(model, glm::radians(movBrazoIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+	//Brazo izquierdo Homero
+	model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+	//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
+	model = glm::rotate(model, glm::radians(movBrazoIzqHomero), glm::vec3(-1.0f, 0.0f, 0.0f));
 	shader.setMat4("model", model);
 	brazoIzq.Draw(shader);
 
-	//Cabeza
-	model = glm::translate(tmp, glm::vec3(0.0f, - 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-	model = glm::translate(model, glm::vec3(0.0f, 2.5f, 0));
+	//Cabeza Homero
+	model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+	//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+	//model = glm::translate(model, glm::vec3(0.0f, 2.5f, 0));
 	shader.setMat4("model", model);
 	cabeza.Draw(shader);
 
@@ -518,7 +519,7 @@ int main()
     }
 	glfwSetWindowPos(window, 0, 30);
     glfwMakeContextCurrent(window);
-	glfwSetKeyCallback(window, my_input);
+	glfwSetKeyCallback(window, my_input);  //$$$$$$$$$$$ Aqui se lee por cada ciclo el estado de las teclas del teclado ?? creo...
     glfwSetFramebufferSizeCallback(window, resize);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
@@ -539,18 +540,16 @@ int main()
 	Shader modelShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs"); //$$$$$$$$$$$$$$$$$$$$$$$$$$ checar si este shader influye en el monito ...
 	Shader SkyBoxshader("Shaders/SkyBox.vs", "Shaders/SkyBox.frag");
 
-	// Load models
-	Model botaDer = ((char *)"Models/Personaje/bota.obj");
-	Model piernaDer = ((char *)"Models/Personaje/piernader.obj");
-	Model piernaIzq = ((char *)"Models/Personaje/piernader.obj");
+	// Las partes de Homero
 	Model torso = ((char *)"Models/Personaje/torso.obj");
-	Model brazoDer = ((char *)"Models/Personaje/brazoder.obj");
-	Model brazoIzq = ((char *)"Models/Personaje/brazoizq.obj");
+	Model piernaDer = ((char *)"Models/Personaje/piernaDer.obj");
+	Model piernaIzq = ((char *)"Models/Personaje/piernaIzq.obj");
+	Model brazoDer = ((char *)"Models/Personaje/brazoDer.obj");
+	Model brazoIzq = ((char *)"Models/Personaje/brazoIzq.obj");
 	Model cabeza = ((char *)"Models/Personaje/cabeza.obj");
-	//Model pisoModel = ((char *)"Models/piso/piso.obj");
 	Model escenario = ((char *)"Models/Escenario/escenario2.obj");
 
-	//Inicialización de KeyFrames
+	//Inicialización de todos los KeyFrames a un valor de cero
 	for (int i = 0; i < MAX_FRAMES; i++)
 	{
 		KeyFrame[i].posX = 0;
@@ -573,7 +572,7 @@ int main()
 	GLuint cubemapTexture = TextureLoading::LoadCubemap(faces);
 
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
-	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);//$$$ Configura la camara, puede ser perspective o ortho(ortogonal) ademas de la profundidad del plano de la camara
 	// render loop
     // While the windows is not closed
     while (!glfwWindowShouldClose(window))
@@ -596,9 +595,7 @@ int main()
 
 		//display(modelShader, ourModel, llantasModel);
 		display(modelShader, SkyBoxshader, cubemapTexture, 
-				botaDer, piernaDer,
-				piernaIzq, torso, brazoDer, brazoIzq,
-				cabeza, escenario); //$$$$$$$$$$$$$$$$$$$$$$$$$$ carga las texturas, los modelos en el display
+				torso, piernaDer,piernaIzq, brazoDer, brazoIzq, cabeza, escenario); //$$$$$$$$$$$$$$$$$$$$$$$$$$ carga las texturas, los modelos en el display
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -630,45 +627,39 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 	//Posicion del modelo
-	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-		posZ++;
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-		posZ--;
-	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-		posY++;
-	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		posY--;
-	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) 
-		posX--;
-	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
-		posX++;
-	// Movimiento de sus articulaciones
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
-		rotRodIzq--; rotRodDer++;
-	}
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
-		rotRodIzq++; rotRodDer--;
-	}
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-		giroMonito--;
-	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
-		giroMonito++;
-
-	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-		movBrazoDer--;
-	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
-		movBrazoDer++;
-
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-		movBrazoIzq--;
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-		movBrazoIzq++;
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+		posXhomero++;
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+		posXhomero--;
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+		posYhomero++;
+	if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
+		posYhomero--;
 	
+	// Movimiento de sus articulaciones
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+		giroHomero++;
+	}
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+		giroHomero--;
+	}
+	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS)
+		rotPiernaDerHomero++;
+	if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
+		rotPiernaDerHomero--;
+	if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
+		rotPiernaIzqHomero++;
+	if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+		rotPiernaIzqHomero--;
+	if (glfwGetKey(window, GLFW_KEY_KP_7) == GLFW_PRESS)
+		movBrazoDerHomero++;
+	if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS)
+		movBrazoDerHomero--;
 	
 	//To play KeyFrame animation 
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
 	{
-		if (play == false && (FrameIndex > 1))
+		if (play == false && (FrameIndex > 1))  //$$$$$$ Se reproduce el KeyFrame si y solo si se guradó por lo menos un frame y play esta en falso
 		{
 			resetElements();
 			//First Interpolation				
@@ -679,7 +670,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			i_curr_steps = 0;
 		}
 		else
-		{
+		{ //$$$$$ En caso de que por alguna razon? el valor de play fura True
 			play = false;
 		}
 	}
@@ -690,6 +681,9 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		if (FrameIndex < MAX_FRAMES)
 		{
 			saveFrame(); //$$$$$$$$$$$$$$$$ guarda un frame
+		}
+		else {
+			printf("$$Se acabaron los frames");
 		}
 	}
 }
