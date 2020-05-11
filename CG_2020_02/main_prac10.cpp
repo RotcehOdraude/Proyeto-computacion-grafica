@@ -29,7 +29,7 @@ GLuint VBO, VAO, EBO;
 GLuint skyboxVBO, skyboxVAO;
 
 //Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 20.0f));
+Camera camera(glm::vec3(0.0f, 5.0f, 20.0f));// $$$$$ Posición de la cámara
 double	lastX = 0.0f,
 		lastY = 0.0f;
 bool firstMouse = true;
@@ -370,7 +370,7 @@ void animate(void)
 
 void display(	Shader shader, Shader skyboxShader, GLuint skybox, 
 				Model botaDer, Model piernaDer, Model piernaIzq, Model torso,
-				Model brazoDer, Model brazoIzq, Model cabeza, Model piso)
+				Model brazoDer, Model brazoIzq, Model cabeza, Model escenario)
 {
 	shader.use();
 
@@ -406,7 +406,7 @@ void display(	Shader shader, Shader skyboxShader, GLuint skybox,
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 
 	//Use "projection" to include Camera //$$$$$$$$$ Profundidad del plano de la camara ---> ultimo valor
-	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 175.0f);
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 150.0f);
 	view = camera.GetViewMatrix();
 
 	// pass them to the shaders
@@ -415,14 +415,15 @@ void display(	Shader shader, Shader skyboxShader, GLuint skybox,
 	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 	shader.setMat4("projection", projection);
 
-	model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -1.0f));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial del modelo o del piso?
-	model = glm::scale(model, glm::vec3(0.007f, 0.007f, 0.007f));
+	//Escenario
+	model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -100.0f));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial del escenario
+	//model = glm::scale(model, glm::vec3(0.007f, 0.007f, 0.007f));// <--- tamaño del escenario .. NO ESALAR
 	shader.setMat4("model", model);
-	piso.Draw(shader);
+	escenario.Draw(shader);
 
 	//Personaje
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0, 1, 0));
+	model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));//$$$$$$$$$$$$$$$$$$$$$$$$$$ posicion del modelo
 	tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo
 	shader.setMat4("model", model);
@@ -542,12 +543,12 @@ int main()
 	Model botaDer = ((char *)"Models/Personaje/bota.obj");
 	Model piernaDer = ((char *)"Models/Personaje/piernader.obj");
 	Model piernaIzq = ((char *)"Models/Personaje/piernader.obj");
-	//Model torso = ((char *)"Models/Personaje/torso.obj");
-	Model torso = ((char *)"Models/Escenario/escenario2.obj");
+	Model torso = ((char *)"Models/Personaje/torso.obj");
 	Model brazoDer = ((char *)"Models/Personaje/brazoder.obj");
 	Model brazoIzq = ((char *)"Models/Personaje/brazoizq.obj");
 	Model cabeza = ((char *)"Models/Personaje/cabeza.obj");
-	Model pisoModel = ((char *)"Models/piso/piso.obj");
+	//Model pisoModel = ((char *)"Models/piso/piso.obj");
+	Model escenario = ((char *)"Models/Escenario/escenario2.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -597,7 +598,7 @@ int main()
 		display(modelShader, SkyBoxshader, cubemapTexture, 
 				botaDer, piernaDer,
 				piernaIzq, torso, brazoDer, brazoIzq,
-				cabeza, pisoModel); //$$$$$$$$$$$$$$$$$$$$$$$$$$ carga las texturas, los modelos en el display
+				cabeza, escenario); //$$$$$$$$$$$$$$$$$$$$$$$$$$ carga las texturas, los modelos en el display
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
