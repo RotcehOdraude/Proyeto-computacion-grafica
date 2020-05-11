@@ -29,7 +29,7 @@ GLuint VBO, VAO, EBO;
 GLuint skyboxVBO, skyboxVAO;
 
 //Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 13.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 20.0f));
 double	lastX = 0.0f,
 		lastY = 0.0f;
 bool firstMouse = true;
@@ -77,7 +77,7 @@ float	incX = 0.0f,
 		giroMonitoInc = 0.0f,
 		movBrazoInc = 0.0f;
 
-#define MAX_FRAMES 9
+#define MAX_FRAMES 9    //$$$$$$$$$$$$$$$$$$$$$$$$$$ Es la condicion maxima del ciclo for de los frames
 int i_max_steps = 190;
 int i_curr_steps = 0;
 typedef struct _frame
@@ -93,7 +93,7 @@ typedef struct _frame
 	float rotRodDer;
 }FRAME;
 
-FRAME KeyFrame[MAX_FRAMES];
+FRAME KeyFrame[MAX_FRAMES];   //$$$$$$$$$$$$$$$$$$$$$$$$$$ Frame es una estructura que contine las posiciones de los keyframes
 int FrameIndex = 0;			//introducir datos
 bool play = false;
 int playIndex = 0;
@@ -199,7 +199,7 @@ void getResolution()
 void LoadTextures()
 {
 
-	
+	//$$$$$$$$$$$$$$$$$$$$$$$$$$ Deberia estar vacio?
 }
 
 void myData()
@@ -383,19 +383,19 @@ void display(	Shader shader, Shader skyboxShader, GLuint skybox,
 
 	shader.setVec3("pointLight[0].position", lightPosition);
 	shader.setVec3("pointLight[0].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-	shader.setVec3("pointLight[0].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-	shader.setVec3("pointLight[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+	shader.setVec3("pointLight[0].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+	shader.setVec3("pointLight[0].specular", glm::vec3(0.0f, 0.0f, 0.0f));
 	shader.setFloat("pointLight[0].constant", 1.0f);
-	shader.setFloat("pointLight[0].linear", 0.009f);
-	shader.setFloat("pointLight[0].quadratic", 0.0032f);
+	shader.setFloat("pointLight[0].linear", 0.22f);
+	shader.setFloat("pointLight[0].quadratic", 0.019f);
 
-	shader.setVec3("pointLight[1].position", glm::vec3(0.0, 0.0f, 0.0f));
-	shader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-	shader.setVec3("pointLight[1].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+	shader.setVec3("pointLight[1].position", glm::vec3(20.0, 15.0f, 35.0f));
+	shader.setVec3("pointLight[1].ambient", glm::vec3(1.0f, 1.0f, 1.0f));
+	shader.setVec3("pointLight[1].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 	shader.setVec3("pointLight[1].specular", glm::vec3(0.0f, 0.0f, 0.0f));
 	shader.setFloat("pointLight[1].constant", 1.0f);
-	shader.setFloat("pointLight[1].linear", 0.009f);
-	shader.setFloat("pointLight[1].quadratic", 0.032f);
+	shader.setFloat("pointLight[1].linear", 0.022f);
+	shader.setFloat("pointLight[1].quadratic", 0.0019f);
 
 	shader.setFloat("material_shininess", 32.0f);
 
@@ -415,7 +415,7 @@ void display(	Shader shader, Shader skyboxShader, GLuint skybox,
 	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 	shader.setMat4("projection", projection);
 
-	model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -1.0f));
+	model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -1.0f));//$$$$$$$$$$$$$$$$$$$$$$$$$$ Posicion inicial del modelo o del piso?
 	model = glm::scale(model, glm::vec3(0.007f, 0.007f, 0.007f));
 	shader.setMat4("model", model);
 	piso.Draw(shader);
@@ -423,15 +423,15 @@ void display(	Shader shader, Shader skyboxShader, GLuint skybox,
 	//Personaje
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0, 1, 0));
-	model = glm::translate(model, glm::vec3(posX, posY, posZ));
-	tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
+	model = glm::translate(model, glm::vec3(posX, posY, posZ));//$$$$$$$$$$$$$$$$$$$$$$$$$$ posicion del modelo
+	tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro modelo
 	shader.setMat4("model", model);
 	torso.Draw(shader);
 
 	//Pierna Der
 	model = glm::translate(tmp, glm::vec3(-0.5f, 0.0f, -0.1f));
 	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-	model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f)); //$$$$$$$$$$$$$$$$$$$$$$$$$$ giro de rotRodIzq
 	shader.setMat4("model", model);
 	piernaDer.Draw(shader);
 
@@ -508,7 +508,7 @@ int main()
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Practica 10 2020-2", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Projecto CompuGrafica Hector 2020-2", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -530,19 +530,20 @@ int main()
 
 	//Mis funciones
 	//Datos a utilizar
-	LoadTextures();
+	LoadTextures();    //$$$$$$$$$$$$$$$$$$$$$$$$$$
 	myData2();
 	glEnable(GL_DEPTH_TEST);
 	
 	//Shaders
-	Shader modelShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs");
+	Shader modelShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs"); //$$$$$$$$$$$$$$$$$$$$$$$$$$ checar si este shader influye en el monito ...
 	Shader SkyBoxshader("Shaders/SkyBox.vs", "Shaders/SkyBox.frag");
 
 	// Load models
 	Model botaDer = ((char *)"Models/Personaje/bota.obj");
 	Model piernaDer = ((char *)"Models/Personaje/piernader.obj");
 	Model piernaIzq = ((char *)"Models/Personaje/piernader.obj");
-	Model torso = ((char *)"Models/Personaje/torso.obj");
+	//Model torso = ((char *)"Models/Personaje/torso.obj");
+	Model torso = ((char *)"Models/Escenario/escenario.obj");
 	Model brazoDer = ((char *)"Models/Personaje/brazoder.obj");
 	Model brazoIzq = ((char *)"Models/Personaje/brazoizq.obj");
 	Model cabeza = ((char *)"Models/Personaje/cabeza.obj");
@@ -561,7 +562,7 @@ int main()
 	
 	// Load textures
 	vector<const GLchar*> faces;
-	faces.push_back("SkyBox/right.tga");
+	faces.push_back("SkyBox/right.tga");//$$$$$$$$$$$$$$$$$$$$$$$$$$ Aqui puedo cambiar las caras de mi skybox
 	faces.push_back("SkyBox/left.tga");
 	faces.push_back("SkyBox/top.tga");
 	faces.push_back("SkyBox/bottom.tga");
@@ -584,7 +585,8 @@ int main()
         // input
         // -----
         //my_input(window);
-		animate();
+		animate(); //$$$$$$$$$$$$$$$$$$$$$$$$$$ esta a la espera de que se defina la animacion por keyframes con la espera de
+		////$$$$$$$$$$$$$$$$$$$$$$$$$$ la tecla espacio 
 
         // render
         // Background color
@@ -595,7 +597,7 @@ int main()
 		display(modelShader, SkyBoxshader, cubemapTexture, 
 				botaDer, piernaDer,
 				piernaIzq, torso, brazoDer, brazoIzq,
-				cabeza, pisoModel);
+				cabeza, pisoModel); //$$$$$$$$$$$$$$$$$$$$$$$$$$ carga las texturas, los modelos en el display
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -626,36 +628,39 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(LEFT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
-	//To Configure Model
-	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+	//Posicion del modelo
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
 		posZ++;
-	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
 		posZ--;
-	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-		posX--; posY--;
-	}
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
-		posX++; posY++;
-	}
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+		posY++;
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+		posY--;
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) 
+		posX--;
+	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
+		posX++;
+	// Movimiento de sus articulaciones
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
 		rotRodIzq--; rotRodDer++;
 	}
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
 		rotRodIzq++; rotRodDer--;
 	}
-	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		giroMonito--;
-	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
 		giroMonito++;
 
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
 		movBrazoDer--;
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
 		movBrazoDer++;
 
-	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
 		movBrazoIzq--;
-	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 		movBrazoIzq++;
 	
 	
@@ -683,7 +688,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	{
 		if (FrameIndex < MAX_FRAMES)
 		{
-			saveFrame();
+			saveFrame(); //$$$$$$$$$$$$$$$$ guarda un frame
 		}
 	}
 }

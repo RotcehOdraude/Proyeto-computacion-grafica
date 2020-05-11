@@ -1,0 +1,64 @@
+# 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
+# File Created: 10.05.2020 06:11:10
+
+newmtl Material__81
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\tronco.png
+	map_Kd C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\tronco.png
+
+newmtl Material__82
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\Brazo2.png
+	map_Kd C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\Brazo2.png
+
+newmtl wire_008061138
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.0314 0.2392 0.5412
+	Kd 0.0314 0.2392 0.5412
+	Ks 0.3500 0.3500 0.3500
+
+newmtl Material__80
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\cabeza2.png
+	map_Kd C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\cabeza2.png
+
+newmtl wire_028089177
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.1098 0.3490 0.6941
+	Kd 0.1098 0.3490 0.6941
+	Ks 0.3500 0.3500 0.3500

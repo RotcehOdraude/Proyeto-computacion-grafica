@@ -86,8 +86,8 @@ newmtl Material__81
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\tronco.png
-	map_Kd C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\tronco.png
+	#map_Ka tronco.png
+	map_Kd tronco.png
 
 newmtl Material__82
 	Ns 10.0000
@@ -100,8 +100,8 @@ newmtl Material__82
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\Brazo2.png
-	map_Kd C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\Brazo2.png
+	#map_Ka Brazo2.png
+	map_Kd Brazo2.png
 
 newmtl wire_008061138
 	Ns 32
@@ -124,8 +124,8 @@ newmtl Material__80
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\cabeza2.png
-	map_Kd C:\Users\hecto\Desktop\Proyeto-computacion-grafica\Modelos\Obj\Los simpson\maps\cabeza2.png
+	#map_Ka cabeza2.png
+	map_Kd cabeza2.png
 
 newmtl wire_213154229
 	Ns 32
