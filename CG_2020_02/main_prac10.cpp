@@ -1,8 +1,8 @@
-/*---------------------------------------------------------*/
-/* ----------------   Práctica 10 --------------------------*/
-/*-----------------    2020-2   ---------------------------*/
-/*------ Alumno: Cabello Aguilar Hécto Ediardo ------------*/
-//#define STB_IMAGE_IMPLEMENTATION
+			/*---------------------------------------------------------*/
+			/* ----------------   Projecto Final  ---------------------*/
+			/*-----------------       2020-2      ---------------------*/
+			/*-------  Alumno: Cabello Aguilar Héctor Eduardo ---------*/
+
 #include <glew.h>
 #include <glfw3.h>
 #include <stb_image.h>
@@ -405,8 +405,8 @@ void display(	Shader shader, Shader skyboxShader, GLuint skybox,
 	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 
-	//Use "projection" to include Camera
-	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	//Use "projection" to include Camera //$$$$$$$$$ Profundidad del plano de la camara ---> ultimo valor
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 175.0f);
 	view = camera.GetViewMatrix();
 
 	// pass them to the shaders
@@ -543,7 +543,7 @@ int main()
 	Model piernaDer = ((char *)"Models/Personaje/piernader.obj");
 	Model piernaIzq = ((char *)"Models/Personaje/piernader.obj");
 	//Model torso = ((char *)"Models/Personaje/torso.obj");
-	Model torso = ((char *)"Models/Escenario/escenario.obj");
+	Model torso = ((char *)"Models/Escenario/escenario2.obj");
 	Model brazoDer = ((char *)"Models/Personaje/brazoder.obj");
 	Model brazoIzq = ((char *)"Models/Personaje/brazoizq.obj");
 	Model cabeza = ((char *)"Models/Personaje/cabeza.obj");
